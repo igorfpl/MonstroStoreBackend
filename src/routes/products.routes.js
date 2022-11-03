@@ -19,4 +19,16 @@ router.post("/products",async(req,res)=>{
     return res.status(200).json({message:"Produto cadastrado."});
 })
 
+router.patch("/products",async(req,res)=>{
+    const user = req.body;
+    await db("produto").update(user).where("IdProduto",user.IdProduto);
+    return res.status(200).json({message:"Produto Atualizado."});
+})
+
+router.delete("/products",async(req,res)=>{
+    const user = req.body;
+    await db("produto").delete(user).where("IdProduto",user.IdProduto);
+    return res.status(200).json({message:"Produto Deletado."});
+})
+
 module.exports=router;
