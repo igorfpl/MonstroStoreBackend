@@ -6,7 +6,7 @@ const router = express.Router();
 router.post("/usersauth",async (req,res)=>{
     const user = req.body;
     console.log(user);
-    const userid = await db.select("IdUsuario").from("Usuario").where({Login: user.Login,Senha:user.Senha}).first();
+    const userid = await db.select("IdUsuario").from("Usuario").where({Email: user.Login,Senha:user.Senha}).orWhere({Login: user.Login,Senha:user.Senha}).first();
     if(userid){
         return res.status(200).json({message:"Usuario Verificado.",userid:userid});
     }

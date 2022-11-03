@@ -4,9 +4,18 @@ const db = require ("../database");
 const router = express.Router();
 
 router.get("/products",async(req,res)=>{
-    const user = await db.select().from("Produto");
-    console.log(user);
-    return res.json(user);
+    const {page, limit} = req.query;
+    const offset = page==0 ? page : limit * page;
+    const pagination = await db.select().from("Produto").limit(limit).offset(offset);
+    return res.json(pagination);
+})
+
+router.get("/products/:productname",async(req,res)=>{
+    const { productname } = req.params;
+    const {page, limit} = req.query;
+    const offset = page==0 ? page : limit * page;
+    const pagination = await db.select().from("Produto").whereILike("NomeProduto",`%${productname}%`).limit(limit).offset(offset);
+    return res.json(pagination);
 })
 
 router.post("/products",async(req,res)=>{
